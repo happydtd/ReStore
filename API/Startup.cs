@@ -30,11 +30,14 @@ namespace API
             services.AddDbContext<StoreContext>(opt=>{
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
+            //处理跨域问题
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //调用中间件的次序很重要
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -45,6 +48,10 @@ namespace API
             //app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(opt=>{
+                opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+            });
 
             app.UseAuthorization();
 
