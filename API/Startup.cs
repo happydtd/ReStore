@@ -1,4 +1,5 @@
 using API.Data;
+using API.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -37,10 +38,12 @@ namespace API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //调用中间件的次序很重要
+            app.UseMiddleware<ExceptionMiddleware>();
+            //调用中间件的次序很重要, please have a look microsoft middleware order
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //not use default exception handler, use ExceptionMiddleware
+                //app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1"));
             }
