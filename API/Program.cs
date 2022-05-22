@@ -25,6 +25,10 @@ namespace API
             catch(Exception ex){
                 logger.LogError(ex, "Problem migration data");
             }
+            //下面的不写是因为上面用了using var scope = host.Services.CreateScope();
+            // finally{
+            //     scope.Dispose(); //scope释放资源
+            // }
             host.Run();
         }
 

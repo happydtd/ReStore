@@ -36,11 +36,11 @@ function App() {
       <Header darkMode={darkMode} handleThemeChange={handleThemeChange}/>
       {/* list不要靠近左侧边界 */}
       <Container>
-        <Route exact path='/' component={HomePage}/>
-        <Route exact path='/catalog' component={Catalog}/>
-        <Route path='/catalog/:id' component={ProductDetails}/>
-        <Route path='/about' component={AboutPage}/>
-        <Route path='/contact' component={ContactPage}/>
+        <Route path='/' element={<HomePage/>}/>
+        <Route path='catalog' element={<Catalog/>}/>
+        <Route path='catalog/:id' element={<ProductDetails/>}/>
+        <Route path='about' element={<AboutPage/>}/>
+        <Route path='contact' element={<ContactPage/>}/>
 
       </Container>
     </ThemeProvider>
