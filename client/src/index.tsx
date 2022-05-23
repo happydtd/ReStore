@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './app/layout/styles.css';
 import App from './app/layout/App';
-import { BrowserRouter, Router } from 'react-router-dom';
+import { BrowserRouter} from 'react-router-dom';
 import {createBrowserHistory} from 'history';
 //import reportWebVitals from './reportWebVitals';
 

@@ -40,7 +40,7 @@ export default function Header({darkMode, handleThemeChange}:Props) {
           {/* box可以分组 */}
           <Box display='flex' alignItems='center'>
             {/* 这里加exact是因为不希望 /catalog也选中'/' */}
-            <Typography variant='h6' component={NavLink} to='/' exact sx={navStyles}>Re-Store</Typography>
+            <Typography variant='h6' component={NavLink} to='/' sx={navStyles}>Re-Store</Typography>
             <Switch checked={darkMode} onChange={handleThemeChange}/>
           </Box>
           <Box>

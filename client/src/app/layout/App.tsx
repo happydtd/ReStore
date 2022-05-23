@@ -1,7 +1,7 @@
 import { Container, CssBaseline} from '@mui/material';
 import { createTheme, ThemeProvider} from '@mui/material/styles';
 import { useState } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import AboutPage from '../../features/about/AboutPage';
 import Catalog from '../../features/catalog/Catalog';
@@ -36,11 +36,14 @@ function App() {
       <Header darkMode={darkMode} handleThemeChange={handleThemeChange}/>
       {/* list不要靠近左侧边界 */}
       <Container>
-        <Route path='/' element={<HomePage/>}/>
-        <Route path='catalog' element={<Catalog/>}/>
-        <Route path='catalog/:id' element={<ProductDetails/>}/>
-        <Route path='about' element={<AboutPage/>}/>
-        <Route path='contact' element={<ContactPage/>}/>
+        <Routes>
+          <Route path='/' element={<HomePage/>}/>
+          <Route path='catalog' element={<Catalog/>}/>
+          <Route path='catalog/:id' element={<ProductDetails/>}/>
+          <Route path='about' element={<AboutPage/>}/>
+          <Route path='contact' element={<ContactPage/>}/>
+        </Routes>
+
 
       </Container>
     </ThemeProvider>

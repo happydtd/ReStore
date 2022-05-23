@@ -20,7 +20,7 @@ export default function ProductCard({product}: Props) {
         title={product.name}
         titleTypographyProps={
           {
-            sx:{fontWeitht:'bold', color:'primary.main'}
+            sx:{fontWeight:'bold', color:'primary.main'}
           }
         }
       />
