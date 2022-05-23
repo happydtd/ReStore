@@ -8,8 +8,10 @@ import Catalog from '../../features/catalog/Catalog';
 import ProductDetails from '../../features/catalog/ProductDetail';
 import ContactPage from '../../features/contact/ContactPage';
 import HomePage from '../../features/home/HomePage';
+import ServerError from '../errors/ServerError';
 import Header from './Header';
 import 'react-toastify/dist/ReactToastify.css';
+import { NotFound } from '../errors/NotFound';
 
 function App() {
   const[darkMode, setDarkMode] = useState(false);
@@ -38,10 +40,12 @@ function App() {
       <Container>
         <Routes>
           <Route path='/' element={<HomePage/>}/>
-          <Route path='catalog' element={<Catalog/>}/>
-          <Route path='catalog/:id' element={<ProductDetails/>}/>
-          <Route path='about' element={<AboutPage/>}/>
-          <Route path='contact' element={<ContactPage/>}/>
+          <Route path='/catalog' element={<Catalog/>}/>
+          <Route path='/catalog/:id' element={<ProductDetails/>}/>
+          <Route path='/about' element={<AboutPage/>}/>
+          <Route path='/contact' element={<ContactPage/>}/>
+          <Route path='/server-error' element={<ServerError/>}/>
+          <Route path='*' element={<NotFound/>}/>
         </Routes>
 
 

@@ -1,5 +1,9 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
+import { history } from "../..";
+
+//模拟客户端网络延迟
+const sleep = ()=> new Promise(resolve=> setTimeout(resolve, 500));
 
 axios.defaults.baseURL = 'http://localhost:5000/api/';
 
@@ -9,7 +13,8 @@ const responseBody = (response: AxiosResponse) => {
     return result};
 
 // use interceptor to handle response error
-axios.interceptors.response.use(response=>{
+axios.interceptors.response.use(async response=>{
+    await sleep();
     return response
 }, (error:AxiosError)=>{
     // console.log('caught by interceptor');
@@ -31,7 +36,11 @@ axios.interceptors.response.use(response=>{
             toast.error(data.title)
             break;
         case 500:
-            toast.error(data.title)
+            history.push(
+                '/server-error',
+                 {error: data}
+            );
+            //toast.error(data.title)
             break;
         default:
             break;
