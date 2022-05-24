@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { basketSlice } from "../../features/basket/basketSlice";
 // import { createStore } from "redux";
 // import counterReducer from "../../features/contact/counterReducer";
 import { counterSlice } from "../../features/contact/counterSlice";
@@ -10,7 +11,8 @@ import { counterSlice } from "../../features/contact/counterSlice";
 
 export const store = configureStore({
     reducer:{
-        counter: counterSlice.reducer
+        counter: counterSlice.reducer,
+        basket:basketSlice.reducer
     }
 })
 
