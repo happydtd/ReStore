@@ -2,7 +2,8 @@ import React from 'react'
 import { AppBar , Switch, Toolbar, Typography, List, ListItem, Badge , IconButton, Box} from '@mui/material';
 import { Link, NavLink } from 'react-router-dom';
 import { ShoppingCart } from '@mui/icons-material';
-import { useStoreContext } from '../../app/context/StoreContext';
+//import { useStoreContext } from '../../app/context/StoreContext';
+import { useAppSelector } from '../store/configureStore';
 
 interface Props{
     darkMode : boolean
@@ -33,7 +34,7 @@ const navStyles ={
 }
 
 export default function Header({darkMode, handleThemeChange}:Props) {
-  const {basket} = useStoreContext();
+  const {basket} = useAppSelector(state=>state.basket);//useStoreContext();
   const itemCount = basket?.items.reduce((sum,item)=> sum = sum + item.quantity, 0);
   return (
       //sx={{mb:4}}, sx is custom style , mb meanings margin bottom

@@ -4,15 +4,20 @@ import { Table, TableHead, TableRow, Typography, TableCell, TableBody, TableCont
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import agent from '../../app/api/agent';
+import { useAppDispatch, useAppSelector } from '../../app/store/configureStore';
+import { removeItem, setBasket } from './basketSlice';
 // import React, { useEffect, useState } from 'react'
 // import agent from '../../app/api/agent';
-import { useStoreContext } from '../../app/context/StoreContext';
+//import { useStoreContext } from '../../app/context/StoreContext';
+
 import BasketSummary from './BasketSummary';
 // import { LoadingComponent } from '../../app/layout/LoadingComponent';
 // import { Basket } from '../../app/models/basket';
 
 const BasketPage = () => {
-    const {basket, setBasket, removeItem} = useStoreContext();
+    //const {basket, setBasket, removeItem} = useStoreContext();
+    const {basket} = useAppSelector(state => state.basket);
+    const dispatch = useAppDispatch();
     const [status, setStatus] = useState({
         loading: false,
         name: ''
@@ -21,7 +26,7 @@ const BasketPage = () => {
     function handleAddItem(productId: number, name: string){
         setStatus({loading:true, name});
         agent.Basket.addItem(productId)
-            .then(basket=> setBasket(basket))
+            .then(basket=> dispatch(setBasket(basket)))
             .catch(error=> console.log(error))
             .finally(()=> setStatus({loading:false, name:''}))
     }
@@ -29,7 +34,7 @@ const BasketPage = () => {
     function handleRemoveItem(productId: number, quantity = 1, name: string){
         setStatus({loading:true, name});
         agent.Basket.removeItem(productId, quantity)
-            .then(()=> removeItem(productId, quantity))
+            .then(()=> dispatch(removeItem({productId, quantity})))
             .catch(error=> console.log(error))
             .finally(()=> setStatus({loading:false, name:''}))
     }
