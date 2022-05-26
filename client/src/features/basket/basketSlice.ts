@@ -14,23 +14,24 @@ const initialState:BasketState={
 //<Basket,{productId:number, quantity:number}>第一个是返回类型，第二个是传入参数
 export const addBasketItemAsync = createAsyncThunk<Basket,{productId:number, quantity?:number}>(
     'basket/addBasketItemAsync',
-    async ({productId, quantity = 1})=>{
+    async ({productId, quantity = 1}, thunkAPI)=>{
         try{
             return await agent.Basket.addItem(productId, quantity);
         }
-        catch (error){
-            console.log(error);
+        catch (error : any){
+            return thunkAPI.rejectWithValue({error: error.data})
         }
     }
 )
 
 export const removeBasketItemAsync = createAsyncThunk<void,{productId:number, quantity?:number, name?:string}>(
     'basket/removeBasketItemAsync',
-    async({productId, quantity = 1}) =>{
+    async({productId, quantity = 1}, thunkAPI) =>{
         try{
             return await agent.Basket.addItem(productId, quantity);
-        } catch (error){
-            console.log(error);
+        } 
+        catch (error: any){
+            return thunkAPI.rejectWithValue({error: error.data})
         }
     }
 )
