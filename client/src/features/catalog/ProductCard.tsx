@@ -7,7 +7,7 @@ import { LoadingButton } from '@mui/lab';
 //import { useStoreContext } from '../../app/context/StoreContext';
 import { currencyFormat } from "../../util/util";
 import { useAppDispatch, useAppSelector } from '../../app/store/configureStore';
-import { addBasketItemAsync, setBasket } from '../basket/basketSlice';
+import { addBasketItemAsync} from '../basket/basketSlice';
 
 
 interface Props{
