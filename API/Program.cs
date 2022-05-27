@@ -1,6 +1,9 @@
 using System;
+using System.Threading.Tasks;
 using API.Data;
+using API.Entities;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,16 +14,17 @@ namespace API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
             //这里用using的目的是使用完后释放scope资源
             using var scope = host.Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<StoreContext>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
             var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
             try{
-                context.Database.Migrate();
-                DbInitializer.Initialize(context);
+                await context.Database.MigrateAsync();
+                await DbInitializer.Initialize(context, userManager);
             }
             catch(Exception ex){
                 logger.LogError(ex, "Problem migration data");
@@ -29,7 +33,7 @@ namespace API
             // finally{
             //     scope.Dispose(); //scope释放资源
             // }
-            host.Run();
+            await host.RunAsync();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
