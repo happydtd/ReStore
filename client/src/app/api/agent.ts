@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { history } from "../..";
+import { PaginatedResponse } from "../models/pagination";
 
 //模拟客户端网络延迟
 const sleep = ()=> new Promise(resolve=> setTimeout(resolve, 500));
@@ -10,12 +11,17 @@ axios.defaults.withCredentials = true;
 
 const responseBody = (response: AxiosResponse) => {
     var result = response.data;
-    console.log('response result',result);
     return result};
 
 // use interceptor to handle response error
 axios.interceptors.response.use(async response=>{
     await sleep();
+    const pagination = response.headers['pagination']
+
+    if (pagination){
+        response.data = new PaginatedResponse(response.data, JSON.parse(pagination));
+    }
+    
     return response
 }, (error:AxiosError)=>{
     // console.log('caught by interceptor');
@@ -50,7 +56,7 @@ axios.interceptors.response.use(async response=>{
 })
 
 const requests = {
-    get: (url: string) => axios.get(url).then(responseBody),
+    get: (url: string, params?: URLSearchParams) => axios.get(url, {params: params}).then(responseBody),
     post: (url: string, body:{}) => axios.post(url, body).then(responseBody),
     put: (url: string, body:{}) => axios.put(url, body).then(responseBody),
     delete: (url: string) => axios.delete(url).then(responseBody),
@@ -58,8 +64,9 @@ const requests = {
 }
 
 const Catalog={
-    list:()=> requests.get('products'),
+    list:(params: URLSearchParams)=> requests.get('products', params),
     details:(id:number)=> requests.get(`products/${id}`),
+    fetchFilters:()=>requests.get('products/filters')
 }
 
 const TestErrors ={
