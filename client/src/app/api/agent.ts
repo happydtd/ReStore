@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { history } from "../..";
 import { PaginatedResponse } from "../models/pagination";
+import { store } from "../store/configureStore";
 
 //模拟客户端网络延迟
 const sleep = ()=> new Promise(resolve=> setTimeout(resolve, 500));
@@ -9,9 +10,22 @@ const sleep = ()=> new Promise(resolve=> setTimeout(resolve, 500));
 axios.defaults.baseURL = 'http://localhost:5000/api/';
 axios.defaults.withCredentials = true;
 
+
 const responseBody = (response: AxiosResponse) => {
     var result = response.data;
     return result};
+
+// axios.interceptors.request.use(config=>{
+//     const token = store.getState().account.user?.token;
+//     if (token) 
+//         config.headers.Authorization = `Bearer ${token}`;
+//     return config;
+// })
+  axios.interceptors.request.use(config=>{
+    const token = store.getState().account.user?.token;
+    if(token) config.headers!.Authorization = `Bearer ${token}`;
+    return config;
+  })
 
 // use interceptor to handle response error
 axios.interceptors.response.use(async response=>{
@@ -40,7 +54,7 @@ axios.interceptors.response.use(async response=>{
             toast.error(data.title)
             break;
         case 401:
-            toast.error(data.title)
+            toast.error(data.title || 'Unauthorised')
             break;
         case 500:
             history.push(
@@ -83,10 +97,17 @@ const Basket ={
     removeItem: (productId: number, quantity=1)=> requests.delete(`basket?productId=${productId}&quantity=${quantity}`),
 }
 
+const Account={
+    login:(values:any)=> requests.post('account/login',values),
+    register:(values : any) => requests.post('account/register', values),
+    currentUser: ()=> requests.get('account/currentuser'),
+}
+
 const agent ={
     Catalog,
     TestErrors,
-    Basket
+    Basket,
+    Account
 }
 
 export default agent;
